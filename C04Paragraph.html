@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 
+        수평방향에서의 정렬
+            블럭엘리먼트 : 컨텐츠의 양에 상관없이 하나의 블럭을 차지하므로 
+            우측의 공간이 충분하여 컨텐츠는 우측정렬된다.
+            인라인엘리먼트 : 컨텐츠의 크기만큼만 영역을 차지하므로 컨텐츠가
+            움직일 공간이 없어 정렬되지 않는다. 만약 정렬해야 한다면
+            부모엘리먼트에서 text-align을 설정해야한다.
+
+     -->
+    <h2>문단관련 CSS 속성들</h2>
+    <div style="border:1px blue dotted; width: 400px;">
+        <h2>컨텐츠 수평방향 정렬</h2>
+        <div style="border:1px solid red; text-align: right;">
+            블럭엘리먼트
+        </div>
+        <!-- span을 정렬하기 위해서 아래처럼 부모 div태그가 필요하다. -->
+        <span style="border: 1px solid blue; text-align: right;">
+            인라인엘리먼트
+        </span>
+    </div>
+
+    <!-- 
+        line-height : 줄간격. 즉 라인 사이의 간격을 띄우는데
+            블럭과 인라인은 조금 다르게 적용된다.
+            블럭 : 컨텐츠의 영역 중 세로 영역이 늘어나서 마치 줄간격이
+                생긴것처럼 보여지게[ 된다.
+            인라인 : 컨텐츠의 영역은 크기의 변화가 없지만, 지정된 사이즈 
+                만큼 줄간격이 생겨 사이가 벌어진다.
+
+     -->
+    <h3>줄사이의 간격</h3>
+    <h4 style="line-height: 6em; border: 1px solid blue; ">
+        블럭엘리먼트1에 줄간격 적용</h4>
+        <h4 style="border: 1px solid black;">블럭 엘리먼트2</h4>
+        <h4 style="border: 1px solid black;">블럭 엘리먼트3</h4>
+
+        <div class="inline">
+            <span style="line-height: 5em; border:1px solid black">
+            인라인 엘리먼트1</span>
+            <span style="border: 1px solid black;">
+            인라인 엘리먼트2</span>
+            <span style="border: 1px solid black;">
+            인라인 엘리먼트3</span>
+        </div>
+
+        <h3>수직상태에서의 가운데 정렬</h3>
+        <!-- div박스의 height와 line-height의 값을 동일하게 지정하면
+            세로상태에서 가운데 정렬이 된다. -->
+        <h4>블럭엘리먼트 사용시 방법1</h4>
+        <div style="border: 1px solid red; height: 100px; width: 200px; padding-top: 100px;">
+            나는 텍스트1
+        </div>
+        <!-- 
+        div박스 내부의 padding을 지정해서 텍스트를 아래쪽으로
+        밀어준다. 이 경우 세로영역이 늘어나므로 사이즈는 별도로 
+        조절해야 한다. 
+    -->
+    <h4>블럭엘리먼트 사용시 방법2</h4>
+    <div
+      style="
+        border: 1px solid red;
+        height: 100px;
+        width: 200px;
+        padding-top: 90px;
+      "
+    >
+      나는 텍스트2
+    </div>
+    
+        <!-- 인라인 엘리먼트인 경우 세로상태에서의 가운데 정렬은
+        vertical-align을 사용한다.  -->
+        <h4>인라인엘리먼트 사용시</h4>
+        <table border="1" width="300">
+            <tr>
+                <td style="height: 100px; vertical-align: top;">인라인엘리먼트세로정렬
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 100px; vertical-align: middle;">인라인엘리먼트 세로정렬</td>
+            </tr>
+            <tr>
+                <td style="height: 100px; vertical-align: bottom;">인라인엘리먼트 세로정렬</td>
+            </tr>
+        </table>
+        <!-- 각기 다른 길이의 단어를 사용함으로써 발생되는 우측의 불규칙적인
+        여백을 깔끔하게 정리해주는 역할을 한다. -->
+        <h2>배분정렬</h2>
+        <p style="border:1px solid blue; text-align:justify;">
+            포털에서 복사한 기사를 입력하세요.
+        </p>
+
+        <h2>들여쓰기</h2>
+        <div style ="border: 1px solid red; text-indent: 1em;">
+            블럭엘리먼트&nbsp;블럭엘리먼트&nbsp;블럭엘리먼트&nbsp;
+            블럭엘리먼트&nbsp;블럭엘리먼트&nbsp;블럭엘리먼트&nbsp;
+            블럭엘리먼트&nbsp;블럭엘리먼트&nbsp;블럭엘리먼트&nbsp;
+        </div>
+        <div style="border:1px solid blue ;padding-left:10px">
+            <span style="text-indent: 1em;">
+                케빈 더 브라위너와 리야드 마레즈(이상 맨시티)는 각각 오른발과 왼발 프리킥 슛으로 득점을 성공시켰다. 그 배경에는 서로의 자신감과 배려가 있었다.
+
+                맨체스터 시티는 29일 오전 4시(한국 시각) 프랑스 파리의 파르크 데 프랭스에서 파리 생제르맹(PSG)과 2020-2021시즌 유럽축구연맹(UEFA) 챔피언스리그(UCL) 4강 1차전을 치렀다. 결과는 맨시티의 2-1 역전승. 원정에서 2골을 몰아친 맨시티는 사상 첫 챔피언스리그 결승 진출에 파란불을 켰다.
+                
+                이른 시간 코너킥에서 선제 실점을 내준 맨시티는 후반전에 기세를 되찾았다. 후반 15분 더 브라위너의 프리킥 크로스가 그대로 동점골로 이어졌다. 7분 뒤에는 마레즈가 프리킥 찬스를 맞았다. 마레즈의 왼발 슛은 수비벽 틈을 뚫고 역전골로 이어졌다. 두 명의 키커 덕분에 맨시티는 0-1 흐름을 2-1로 뒤집을 수 있었다.
+                
+                이 경기 공식 MOM으로 선정된 더 브라위너는 영국 ‘BT 스포츠’를 통해 “경기 시작 후 10분 동안은 좋았다. 우리가 경기를 지배했다. 하지만 PSG는 믿을 수 없을 정도로 강한 팀이다. 실점을 내준 뒤에는 우리가 무너졌다. 준비한대로 경기를 하지 못했다”라고 돌아봤다. 이어 “후반전에는 공간을 찾기 위해 노력했다. 팀으로서 더 발전된 모습을 보여줬다”라고 덧붙였다.
+                
+                자신의 득점 상황을 두고는 “내가 넣은 동점골은 골키퍼에게 어려운 공이었다. 분명 골키퍼는 이 크로스를 누군가 건드리라 예상했을 것”이라고 설명했다. 마레즈의 두 번째 골에 대해서는 “마레즈가 내게 와서 ‘프리킥 내가 차도 돼?’라고 물었다. 난 '그렇게 해. 너 자신을 믿는다면'이라고 답했다. 그리곤 골을 넣더라. 뭐라고 할 말이 있겠나”라며 기뻐했다.
+            </span>
+        </div>
+</body>
+</html>
