@@ -5,57 +5,97 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        table{
+            width : 100%;
+            border : 1px solid red;
+        }
+       
+        td{
+            border: 1px solid black;]
+            
+        }
+        /* 라디오박스 지우기 */
+        .box{
+            display: none;
+        }
+        /* 체크된 라디오박스 라벨 색깔 바꾸기 */
+        .box:checked + label{
+            background-color: seagreen;
+        }
+        /* 남,여 선택 박스 꾸미기 */
+       label{
+        position: relative;
+        color: #fff;
+        background-color: #aaa;
+        font-size: 10px;
+        text-align: center;
+        width: 30px;
+        height: 30px;
+        line-height: 20px;
+        display: block;
+        cursor: pointer;
+        border: 3px solid transparent;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        }
+    </style>
 </head>
 <body>
-    <table>
-        <tr>
-            <th>아이디</th>
-            <td><input type="text"><input type="button" value="중복확인"><br><p>※3~15자의 영문과 숫자만 가능합니다.</p></td>
-        </tr>
-        <tr>
-            <th>비밀번호</th>
-            <td><input type="text"></td>
-        </tr>
-        <tr>
-            <th>비밀번호 확인</th>
-            <td></td>
-        </tr>
-        <tr>
-            <th>이름</th>
-            <td></td>
-        </tr>
-        <tr>
-            <th>생년월일</th>
-            <td></td>
-        </tr>
-        <tr>
-            <th>주소</th>
-            <td></td>
-        </tr>
-        <tr>
-            <th>이메일</th>
-            <td></td>
-        </tr>
-        <tr>
-            <th>휴대폰번호</th>
-            <td></td>
-        </tr>
-        <tr>
-            <th>전화번호</th>
-            <td></td>
-        </tr>
-        <tr>
-            <th>출판계약일</th>
-            <td></td>
-        </tr>
-        <tr>
-            <th>출판종료일</th>
-            <td></td>
-        </tr>
-        <tr>
-            <th>선택정보</th>
-            <td></td>
-        </tr>
-    </table>
+    <form action="">
+
+        <table>
+            <tr>
+                <th>아이디</th>
+                <td><input type="text"><input type="button" value="중복확인"><br><p>※3~15자의 영문과 숫자만 가능합니다.</p></td>
+            </tr>
+            <tr>
+                <th>비밀번호</th>
+                <td><input type="text"><br><p>※영문/숫자/특수문자 조합 6~20자 이상 입력해주세요.(아이디/전화번호사용 불가)<br>※1234**비밀번호는 홈페이지 사용에 제한됩니다.</p></td>
+            </tr>
+            <tr>
+                <th>비밀번호 확인</th>
+                <td><input type="text"></td>
+            </tr>
+            <tr>
+                <th>이름</th>
+                <td><input type="text">&nbsp;<input type="radio" name="sex" id="woman" value="women" class="box" checked=checked><label for="woman" class="select">여</label>
+                    &nbsp;<input type="radio" name="sex" id="man" value="man" class="box"><label for="man" class="select">남</label></td>
+            </tr>
+            <tr>
+                <th>생년월일</th>
+                <td><input type="text"><img src="" alt=""></td>
+            </tr>
+            <tr>
+                <th>주소</th>
+                <td><input type="text">&nbsp;<input type="submit" value="우편번호찾기"><br><input type="text">&nbsp;<input type="text"></td>
+            </tr>
+            <tr>
+                <th>이메일</th>
+                <td><input type="text">@<input type="text"> <input type="text" value="직접입력"></td>
+            </tr>
+            <tr>
+                <th>휴대폰번호</th>
+                <td><input type="text" value="010">-<input type="text">-<input type="text"></td>
+            </tr>
+            <tr>
+                <th>전화번호</th>
+                <td><input type="text" value="070">-<input type="text">-<input type="text"></td>
+            </tr>
+            <tr>
+                <th>출판계약일</th>
+                <td><input type="text"></td>
+            </tr>
+            <tr>
+                <th>출판종료일</th>
+                <td><input type="text"></td>
+            </tr>
+            <tr>
+                <th>선택정보</th>
+                <td><input type="checkbox">자바출판<input type="checkbox">반기획출판<input type="checkbox">프리미엄출판<input type="checkbox">출판컨설팅 <br><input type="checkbox">기획출판<input type="checkbox">미정</td>
+            </tr>
+        </table>
+    </form>
 </body>
 </html>
