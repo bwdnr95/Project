@@ -1,19 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        table{
-            width : 100%;
-            border : 1px solid red;
+        body{
+            background-color: #F9F9F9;
+            margin: 0;
+            padding: 30px;
         }
-       
+        table{
+            border-top: 2px solid cornflowerblue;
+            background-color: white;
+            width : 100%;
+            /* border : 1px solid red; */
+            border-spacing: 10px;
+            padding-left : 45px;
+            padding-top: 20px;
+        }
+        th{
+            /* background-color: white; */
+            width: 10%;
+            /* border: 1px solid black; */
+            text-align: left;
+
+        }     
         td{
-            border: 1px solid black;]
+            /* background-color: white; */
+            /* border: 1px solid black; */
             
+        }
+        td input{
+            margin: 5px;
+            padding: 10px;
+            
+        }
+        td p{
+            font-size: 0.7em; color: #808080; font-bold;
+        }
+        .desc{
+            line-height: 25px;
         }
         /* 라디오박스 지우기 */
         .box{
@@ -22,6 +50,38 @@
         /* 체크된 라디오박스 라벨 색깔 바꾸기 */
         .box:checked + label{
             background-color: seagreen;
+        }
+        .insertbox{
+            margin-top: 40px;
+            width: 20%;
+        }
+        .insertboxx{
+            width: 20%;
+        }
+        .blackbox{
+            margin-left: 10px;
+            background-color: black;
+            color: white;
+            width: 7%;
+            padding: 6px;
+            box-sizing: border-box;
+        }
+        .birth{
+            width: 15%;
+            
+        }
+        .firstnumber{
+            box-sizing: border-box;
+            padding: 10px;
+            width: 85px;
+        }
+        .number{
+            box-sizing: border-box;
+            padding: 10px;
+            width: 100px;
+        }
+        .addr{
+            margin-top: 30px;
         }
         /* 남,여 선택 박스 꾸미기 */
        label{
@@ -48,40 +108,48 @@
         <table>
             <tr>
                 <th>아이디</th>
-                <td><input type="text"><input type="button" value="중복확인"><br><p>※3~15자의 영문과 숫자만 가능합니다.</p></td>
+                <td class="desc"><input type="text" class="insertbox" size="15" maxlength="15" minlength="3"><input type="button" class="blackbox" value="중복확인"><br><p>※3~15자의 영문과 숫자만 가능합니다.</p></td>
             </tr>
             <tr>
                 <th>비밀번호</th>
-                <td><input type="text"><br><p>※영문/숫자/특수문자 조합 6~20자 이상 입력해주세요.(아이디/전화번호사용 불가)<br>※1234**비밀번호는 홈페이지 사용에 제한됩니다.</p></td>
+                <td class="desc"><input type="password" class="insertbox" size="20" maxlength="20" minlength="6"><br><p>※영문/숫자/특수문자 조합 6~20자 이상 입력해주세요.(아이디/전화번호사용 불가)<br>※1234**비밀번호는 홈페이지 사용에 제한됩니다.</p></td>
             </tr>
             <tr>
                 <th>비밀번호 확인</th>
-                <td><input type="text"></td>
+                <td><input type="password" class="insertboxx"></td>
             </tr>
             <tr>
                 <th>이름</th>
-                <td><input type="text">&nbsp;<input type="radio" name="sex" id="woman" value="women" class="box" checked=checked><label for="woman" class="select">여</label>
+                <td><input type="text" class="insertbox"><input type="radio" name="sex" id="woman" value="women" class="box" checked=checked><label for="woman" class="select">여</label>
                     &nbsp;<input type="radio" name="sex" id="man" value="man" class="box"><label for="man" class="select">남</label></td>
             </tr>
             <tr>
                 <th>생년월일</th>
-                <td><input type="text"><img src="" alt=""></td>
+                <td><input type="text" class="birth" ><img src="" alt=""></td>
             </tr>
             <tr>
                 <th>주소</th>
-                <td><input type="text">&nbsp;<input type="submit" value="우편번호찾기"><br><input type="text">&nbsp;<input type="text"></td>
+                <td><input type="text" class="addr" >&nbsp;<input type="submit" class="blackbox" value="우편번호찾기"><div style="margin-top: 0px;"><input type="text" class="insertbox">&nbsp;<input type="text" class="insertbox"></div></td>
             </tr>
             <tr>
                 <th>이메일</th>
-                <td><input type="text">@<input type="text"> <input type="text" value="직접입력"></td>
+                <td><input type="text">@<input type="text"> 
+                    <select id="email">
+                        <option value="직접임력" selected>직접입력</option>
+                        <option value="gmail.com">gmail.com</option>
+                        <option value="naver.com">naver.com</option>
+                        <option value="daum.net">daum.net</option>
+                        <option value="yahoo.com">yahoo.com</option>
+                        <option value="nate.com">nate.com</option>
+                    </select></td>
             </tr>
             <tr>
                 <th>휴대폰번호</th>
-                <td><input type="text" value="010">-<input type="text">-<input type="text"></td>
+                <td><select class="firstnumber"><option value="010" selected>010</option><option value="011">011</option><option value="018">018</option></select>-<input type="text" class="number">-<input type="text" class="number"></td>
             </tr>
             <tr>
                 <th>전화번호</th>
-                <td><input type="text" value="070">-<input type="text">-<input type="text"></td>
+                <td><select class="firstnumber"><option value="070" selected>070</option><option value="02">02</option><option value="018">018</option></select>-<input type="text" class="number">-<input type="text" class="number"></td>
             </tr>
             <tr>
                 <th>출판계약일</th>
@@ -96,6 +164,41 @@
                 <td><input type="checkbox">자바출판<input type="checkbox">반기획출판<input type="checkbox">프리미엄출판<input type="checkbox">출판컨설팅 <br><input type="checkbox">기획출판<input type="checkbox">미정</td>
             </tr>
         </table>
+        <div>
+            <p style="font-size: 15px; font-weight: bold;">이용약관동의*<p>선택항목에 동의하지 않은 경우도 회원가입 및 일반적인 서비스를 이용하실 수 있습니다.</p></p>  
+        <table>
+            <tr>
+                <td style="font-weight: bold;">
+                    <input type="checkbox">전체동의
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox">이용약관(필수)&nbsp;약관보기
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox">개인정보처리방침&nbsp;약관보기
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox">이벤트 및 혜택 알림 수신(선택)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox">sms
+                </td>2
+                <td>
+                    <input type="checkbox">이메일
+                </td>
+            </tr>
+        </table>
+        <div style="margin: 25px; text-align: center;">
+            <input type="submit" value="가입하기" style="padding: 15px; font-size: 15px; background-color: slateblue; width: 15%; color: white; border-radius: 5px;">
+        </div>
     </form>
 </body>
 </html>
