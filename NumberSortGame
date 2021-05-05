@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>moveArray.html</title>
+    <style>
+        #show{
+            text-align: center;
+            margin-top: 15px;
+            font-weight: bold;
+            width: 33%;
+            font-size: 45px;
+            border: 2px black solid;
+            box-sizing: border-box;
+        }
+        #change{
+            margin-left: 20px;
+            border-radius: 10px;
+            font-weight: bold;
+            background-color: black;
+            color: white;
+            font-size: 15px;
+            padding: 15px;
+        }
+        input[type=button]{
+            background-color: black;
+            color: white;
+            margin-left: 7px;
+            padding: 10px;
+        }
+        input[type=button]:active{
+            cursor: pointer;
+            background-color: green;
+        }
+    </style>
+</head>
+<body>
+
+    <script>
+        var iu = new Array();
+        var correctArray = new Array();
+        var compose;
+        var avengers = new Array();
+        var moveindex = 0;
+        //랜덤으로 숫자 생성하여 배열에 집어넣음
+        function randomArray(arlength){
+            var rdArray = new Array(arlength);
+            var idx=0;
+            var input = false;
+            while(idx<arlength){
+                var randomNum = parseInt(Math.random()*100)+1;
+                for(var i=0;i<rdArray.length;i++){
+                    if(rdArray[i]==randomNum){
+                        input = true;
+                        break;
+                    }
+                }
+                if(input)
+                    continue;
+                else
+                    rdArray[idx++]=randomNum;
+            }
+            iu= rdArray;
+            for(var i=0;i<rdArray.length;i++){
+                correctArray.push(rdArray[i]);
+            }
+            return rdArray;
+        }
+        
+        function removeArr(array){
+            for(var i=0;array.length;i++){
+                array.pop();
+            }
+        }
+        function whichmove(num){
+            alert(num);
+            avengers.push(num);
+            moveindex++;
+            if(moveindex==2){
+                alert(avengers[0]+"과 "+avengers[1]+"을(를) 바꿉니다.")
+                change(iu);
+                removeArr(avengers);
+                showChange(iu);
+                moveindex=0;
+            }
+        }
+        function selsort(array){
+            var move;
+            var temp;
+            for(var i =0;i<array.length-1; i++){
+                move=101;
+                for(var j=i;j<array.length;j++){
+                   if(move>array[j]){
+                        move = array[j];
+                   }
+                }
+                for(var k=i;k<array.length;k++){
+                    if(array[k]==move){
+                        temp = array[i];
+                        array[i]=array[k];
+                        array[k]=temp;
+                    }
+                }
+            }
+            compose=array;
+        }
+        function showChange(array){
+          document.getElementById("show").value= iu;
+        }
+        function change(array){
+            // var first;
+            // var second;
+            var temp;
+            // var correct =0;
+            // for(var i=0;i<array.length;i++){
+            //     if(avengers[0]==array[i]){
+            //         first=i;
+            //         correct++;
+            //     }
+            //     if(avengers[1]==array[i]){
+            //         second=i;
+            //         correct++;
+            //     }
+            //     if(correct==2)
+            //         break;
+            // }
+            temp = array[avengers[0]-1];
+            array[avengers[0]-1]=array[avengers[1]-1];
+            array[avengers[1]-1]=temp;
+            
+        }
+        function checkAnswer(array){
+            var check=0;
+            for(var i=0;i<compose.length;i++){
+                if(compose[i]==array[i])
+                    check++;
+            }
+            if(check==compose.length)
+                alert("정답입니다!")
+            else
+                alert("정답이아닙니다.")
+        }
+        function createButton(arlength){
+            for(var i=0;i<arlength;i++){
+                document.write("<input type="+" button"+ " name="+"moving"+" value="+(i+1)+" onclick="+"whichmove("+(i+1)+")"+">"+"&nbsp&nbsp&nbsp&nbsp")
+                
+            }
+            document.write("<input type="+" button"+ " id="+"change"+" value="+"정답확인"+" onclick="+"checkAnswer(iu)"+">"+"&nbsp")
+        }
+        function showArray(array){
+            for(var i =0;i<array.length;i++){
+                document.write("<strong style=font-size:20px;>"+array[i]+"&nbsp</strong>")
+            }
+            document.write("</br>")
+        }
+        document.write("<h1>밑의 배열을 순서에 맞게 정렬하세요.</h1>");
+        showArray(randomArray(10));
+        selsort(correctArray);
+        document.write("<input type="+" text"+ " id="+"show"+" value="+iu+">");
+        document.write("<br/>")
+        createButton(10);
+    </script>
+ 
+</body>
+</html>
