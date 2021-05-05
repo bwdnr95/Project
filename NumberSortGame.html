@@ -121,14 +121,14 @@
         //정답인지 아닌지를 확인하는 함수
         function checkAnswer(array){
             var check=0;
-            for(var i=0;i<compose.length;i++){
-                if(compose[i]==array[i])
+            for(var i=0;i<correctArray.length;i++){
+                if(correctArray[i]==array[i])
                     check++;
             }
-            if(check==compose.length)
+            if(check==correctArray.length)
                 alert("정답입니다!")
             else
-                alert("정답이아닙니다.")
+                alert("정답이 아닙니다.")
         }
         //버튼을 배열 갯수만큼 생성하는 함수
         function createButton(arlength){
