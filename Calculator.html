@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table {
+            
+            background-color: silver;
+            border-radius: 10px;
+            width: 600px; height: 500px; 
+            font-weight: bold;
+            font-size: 20px;
+            border-spacing: 10px;
+        }
+        tr{
+           width: 50%; 
+            border-radius: 15px;
+            background-color: #DDDDDD;
+            text-align: center;
+            color: white;
+        }
+        table tr:first-child>td{
+            
+            background-color: #70C738;
+            text-align: right;
+            font-size: 50px;
+            padding: 10px;
+        }
+        td{
+            width: 25%;
+           
+            border-radius: 15px;
+            
+            
+        }
+        td form {
+           
+            width: 100%;
+            height: 100%;
+        }
+        
+        td input{
+            background-color: #373737 ;
+            text-align: center; 
+            font-size: 20px; 
+            font-weight: bold;
+            color: white;
+            border-radius: 15px;
+            height: 100%;
+            width: 100%;
+        }
+        tr td:last-child input{
+            background-color: #FA960A  ;
+        }
+       
+        #equip input{
+            padding: 5px;
+            font-size: 25px;
+            border-radius: 15px;
+            background-color: #7B7B7B;
+            text-align: center;
+           
+        }
+        
+        #equip td:last-child{
+            text-align: center;
+        }
+
+
+    </style>
+</head>
+<body>
+    <table>
+       
+        <tr>
+            <td id="display" colspan="4">0</td>
+       </tr>
+        <tr id="equip">
+            <td colspan="2"><form action="#display"><input type="submit"value="BackSpace" onclick="backSpace()"></form></td>
+            <td colspan="2"><form action="#display"><input type="submit"value="C" onclick="resetShow()"></form></td>
+        </tr>
+        <tr>
+            <td><form action="#display"><input type="submit"value="1" onclick="input(1)"></form></td>
+            <td><form action="#display"><input type="submit"value="2" onclick="input(2)"></form></td>
+            <td><form action="#display"><input type="submit"value="3" onclick="input(3)"></form></td>
+            <td><form action="#display"><input type="submit" id="divide" value="/" onclick="input(document.getElementById('divide').value)"></form></td>
+        </tr>
+        <tr>
+            <td><form action="#display"><input type="submit"value="4" onclick="input(4)"></form></td>
+            <td><form action="#display"><input type="submit"value="5" onclick="input(5)"></form></td>
+            <td><form action="#display"><input type="submit"value="6" onclick="input(6)"></form></td>
+            <td><form action="#display"><input type="submit" id="multiple" value="*" onclick="input(document.getElementById('multiple').value)"></form></td>
+        </tr>
+        <tr>
+            <td><form action="#display"><input type="submit"value="7" onclick="input(7)"></form></td>
+            <td><form action="#display"><input type="submit"value="8" onclick="input(8)"></form></td>
+            <td><form action="#display"><input type="submit"value="9" onclick="input(9)"></form></td>
+            <td><form action="#display"><input type="submit" id="plus" value="+" onclick="input(document.getElementById('plus').value)"></form></td>
+        </tr>
+        <tr>
+            <td><form action="#display"><input type="submit"value="=" onclick="answer()"></form></td>
+            <td><form action="#display"><input type="submit"value="0" onclick="input(0)"></form></td>
+            <td><form action="#display"><input type="submit" id="dot" value="." onclick="input(document.getElementById('dot').value)"></form></td>
+            <td><form action="#display"><input type="submit" id="minus" value="-" onclick="input(document.getElementById('minus').value)"></form></td>
+        </tr>
+    </table>
+    <script>
+        var arrNum = new Array();
+        function showDisplay(arr){
+            var arrStr="";
+            for(var i=0;i<arr.length;i++){
+                arrStr+=arr[i];
+            }
+            var show= document.getElementById("display")
+            show.innerHTML= arrStr;
+        }
+        
+        function input(push){
+            if(arrNum[0]==0){
+                arrNum.shift();
+            }
+            arrNum.push(push);
+            showDisplay(arrNum);
+        }
+        function resetShow(){
+            arrNum.length=0;
+            arrNum.push(0);
+            showDisplay(arrNum);
+        }
+        function backSpace(){
+            if(!(arrNum.length<=1)){
+                arrNum.length=arrNum.length-1;
+            }
+            else{
+                arrNum.length=0;
+                arrNum.push(0);
+            }
+            showDisplay(arrNum);
+        }
+        function answer(){
+            var arrAnswer="";
+            for(var i=0;i<arrNum.length;i++){
+                arrAnswer+=arrNum[i];
+            }
+            var answerNum=eval(arrAnswer);
+            var show= document.getElementById("display")
+            arrNum.length=0;
+            arrNum.push(answerNum);
+            show.innerHTML= answerNum;
+        }
+    </script>
+</body>
+</html>
