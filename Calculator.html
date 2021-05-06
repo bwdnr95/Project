@@ -119,11 +119,26 @@
         }
         
         function input(push){
+           
             if(arrNum[0]==0){
                 arrNum.shift();
             }
-            arrNum.push(push);
-            showDisplay(arrNum);
+            if(arrNum[arrNum.length-1]=='.'||arrNum[arrNum.length-1]=='+'||arrNum[arrNum.length-1]=='-'||arrNum[arrNum.length-1]=='*'||arrNum[arrNum.length-1]=='/'){
+                if(push=='.'||push=='+'||push=='-'||push=='*'||push=='/'){
+                    arrNum[arrNum.length-1]=push;
+                    showDisplay(arrNum);
+                }
+                else{
+                arrNum.push(push);
+                showDisplay(arrNum);
+
+                }
+            }
+            else{
+                arrNum.push(push);
+                showDisplay(arrNum);
+
+            }
         }
         function resetShow(){
             arrNum.length=0;
