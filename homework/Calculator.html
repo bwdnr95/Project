@@ -44,7 +44,7 @@
         
         td input{
             background-color: #373737 ;
-            text-align: left; 
+            text-align: center; 
             font-size: 20px; 
             font-weight: bold;
             color: white;
@@ -61,6 +61,7 @@
             font-size: 25px;
             border-radius: 15px;
             background-color: #7B7B7B;
+            text-align: center;
            
         }
         
@@ -75,36 +76,81 @@
     <table>
        
         <tr>
-            <td id="display" colspan="4">1234</td>
+            <td id="display" colspan="4">0</td>
        </tr>
         <tr id="equip">
-            <td colspan="2"><form action="#display"><input type="submit"value="BackSpace"></form></td>
-            <td colspan="2"><form action="#display"><input type="reset"value="C"></form></td>
+            <td colspan="2"><form action="#display"><input type="submit"value="BackSpace" onclick="backSpace()"></form></td>
+            <td colspan="2"><form action="#display"><input type="submit"value="C" onclick="resetShow()"></form></td>
         </tr>
         <tr>
-            <td><form action="#display"><input type="submit"value="1"></form></td>
-            <td><form action="#display"><input type="submit"value="2"></form></td>
-            <td><form action="#display"><input type="submit"value="3"></form></td>
-            <td><form action="#display"><input type="submit"value="/"></form></td>
+            <td><form action="#display"><input type="submit"value="1" onclick="input(1)"></form></td>
+            <td><form action="#display"><input type="submit"value="2" onclick="input(2)"></form></td>
+            <td><form action="#display"><input type="submit"value="3" onclick="input(3)"></form></td>
+            <td><form action="#display"><input type="submit" id="divide" value="/" onclick="input(document.getElementById('divide').value)"></form></td>
         </tr>
         <tr>
-            <td><form action="#display"><input type="submit"value="4"></form></td>
-            <td><form action="#display"><input type="submit"value="5"></form></td>
-            <td><form action="#display"><input type="submit"value="6"></form></td>
-            <td><form action="#display"><input type="submit"value="x"></form></td>
+            <td><form action="#display"><input type="submit"value="4" onclick="input(4)"></form></td>
+            <td><form action="#display"><input type="submit"value="5" onclick="input(5)"></form></td>
+            <td><form action="#display"><input type="submit"value="6" onclick="input(6)"></form></td>
+            <td><form action="#display"><input type="submit" id="multiple" value="*" onclick="input(document.getElementById('multiple').value)"></form></td>
         </tr>
         <tr>
-            <td><form action="#display"><input type="submit"value="7"></form></td>
-            <td><form action="#display"><input type="submit"value="8"></form></td>
-            <td><form action="#display"><input type="submit"value="9"></form></td>
-            <td><form action="#display"><input type="submit"value="+"></form></td>
+            <td><form action="#display"><input type="submit"value="7" onclick="input(7)"></form></td>
+            <td><form action="#display"><input type="submit"value="8" onclick="input(8)"></form></td>
+            <td><form action="#display"><input type="submit"value="9" onclick="input(9)"></form></td>
+            <td><form action="#display"><input type="submit" id="plus" value="+" onclick="input(document.getElementById('plus').value)"></form></td>
         </tr>
         <tr>
-            <td><form action="#display"><input type="submit"value="="></form></td>
-            <td><form action="#display"><input type="submit"value="0"></form></td>
-            <td><form action="#display"><input type="submit"value="."></form></td>
-            <td><form action="#display"><input type="submit"value="-"></form></td>
+            <td><form action="#display"><input type="submit"value="=" onclick="answer()"></form></td>
+            <td><form action="#display"><input type="submit"value="0" onclick="input(0)"></form></td>
+            <td><form action="#display"><input type="submit" id="dot" value="." onclick="input(document.getElementById('dot').value)"></form></td>
+            <td><form action="#display"><input type="submit" id="minus" value="-" onclick="input(document.getElementById('minus').value)"></form></td>
         </tr>
     </table>
+    <script>
+        var arrNum = new Array();
+        function showDisplay(arr){
+            var arrStr="";
+            for(var i=0;i<arr.length;i++){
+                arrStr+=arr[i];
+            }
+            var show= document.getElementById("display")
+            show.innerHTML= arrStr;
+        }
+        
+        function input(push){
+            if(arrNum[0]==0){
+                arrNum.shift();
+            }
+            arrNum.push(push);
+            showDisplay(arrNum);
+        }
+        function resetShow(){
+            arrNum.length=0;
+            arrNum.push(0);
+            showDisplay(arrNum);
+        }
+        function backSpace(){
+            if(!(arrNum.length<=1)){
+                arrNum.length=arrNum.length-1;
+            }
+            else{
+                arrNum.length=0;
+                arrNum.push(0);
+            }
+            showDisplay(arrNum);
+        }
+        function answer(){
+            var arrAnswer="";
+            for(var i=0;i<arrNum.length;i++){
+                arrAnswer+=arrNum[i];
+            }
+            var answerNum=eval(arrAnswer);
+            var show= document.getElementById("display")
+            arrNum.length=0;
+            arrNum.push(answerNum);
+            show.innerHTML= answerNum;
+        }
+    </script>
 </body>
 </html>
