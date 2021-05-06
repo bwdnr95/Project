@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>moveArray.html</title>
     <style>
+        #clock{
+            text-align: center;
+            color: red;
+            width: 30%;
+        }
         #show{
             text-align: center;
             margin-top: 15px;
@@ -33,6 +38,7 @@
         input[type=button]:active{
             cursor: pointer;
             background-color: green;
+            
         }
     </style>
 </head>
@@ -125,10 +131,44 @@
                 if(correctArray[i]==array[i])
                     check++;
             }
-            if(check==correctArray.length)
+            if(check==correctArray.length){
                 alert("정답입니다!")
+                var answer = confirm("한번 더 하시겠습니까?");
+                if(answer){
+                    location.href="./NumberSortGame.html"//NumberSortGame을 호출해서 새롭게 시작함
+                }
+                else{
+                    self.close();//페이지닫힘
+                }
+            }
+                
             else
                 alert("정답이 아닙니다.")
+        }
+        var watch;
+        var sec =0;
+        var min=0;
+        function clockTime(){
+            if(sec<59){
+                sec++
+            }
+            else{
+                sec=0;
+                min++;
+            }
+            var showTime = document.getElementById("clock");
+            showTime.innerHTML = min +"분 " + sec + "초";
+        }
+        
+        function timeStart(){
+            alert("시작")
+            watch=window.setInterval("clockTime()",1000);
+            document.getElementById("startButton").style="visibility: hidden;"
+         
+        }
+        function resumeTime(){
+            clearInterval(watch);
+            document.getElementById("startButton").style="visibility: visible;"   
         }
         //버튼을 배열 갯수만큼 생성하는 함수
         function createButton(arlength){
@@ -145,6 +185,7 @@
             }
             document.write("</br>")
         }
+        // document.write("<input type="+" button"+ " id="+"timeStart"+" onclock="+ " timeStart()"+" value="+"게임시작"+"></div>")
         document.write("<h1>밑의 배열을 순서에 맞게 정렬하세요.</h1>");
         showArray(randomArray(10));
         selsort(correctArray);
@@ -152,6 +193,12 @@
         document.write("<br/>")
         createButton(10);
     </script>
- 
+    <span id="clock" style="color: red; font-size: 1.8em; font-weight: bold;"></span>
+    <button type="button" id="startButton" style="padding : 15px;width :50px; height: 25px; border: 1px solid black;
+     background-color: blue; cursor: pointer; "value="타이머시작" onclick="timeStart();">
+    </button>
+    <button type="button" id="resumeButton" style="padding : 15px;width :50px; height: 25px; border: 1px solid black;
+     background-color: red; cursor: pointer; "value="타이머중단" onclick="resumeTime();">
+    </button>
 </body>
 </html>
