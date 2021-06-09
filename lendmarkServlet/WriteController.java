@@ -19,11 +19,6 @@ import fileupload.FileUtil;
 import utils.JSFunction;
 @WebServlet("/lendmark/write.do")
 public class WriteController extends HttpServlet { 
-
-	/*
-	 글쓰기 페이지로 진입시에는 get방식 요청
-	 */
-	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		HttpSession session = req.getSession();
@@ -35,13 +30,8 @@ public class WriteController extends HttpServlet {
 		else {
 			session.removeAttribute("url");
 			req.getRequestDispatcher("/lendmark/BoardWrite.jsp").forward(req, resp);
-			
 		}
-	
 	}
-	/*
-	 글쓰기 내용 입력 후 전송했을 때는 post방식 요청
-	 */
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
@@ -56,7 +46,8 @@ public class WriteController extends HttpServlet {
 		MultipartRequest mr = FileUtil.uploadFile(req, saveDirectory, maxPostSize);
 		if(mr!=null) {
 			//파일 외 파라미터 받기
-			String id = mr.getParameter("id");
+			HttpSession session = req.getSession();
+			String id= (String)session.getAttribute("USER_ID");
 			String title = mr.getParameter("title");
 			String content = mr.getParameter("content");
 			String price = mr.getParameter("price");
@@ -88,10 +79,10 @@ public class WriteController extends HttpServlet {
 				LendmarkDAO dao = new LendmarkDAO();
 				int result = dao.insertTrade(dto);
 				if(result==1) {
-					resp.sendRedirect("../lendmark/list.do");
+					JSFunction.alertLocation(resp, "판매글 작성이 완료되었습니다.", "../lendmark/view.do?category="+category);
 				}
 				else {
-					resp.sendRedirect("../lendmark/write.do");
+					JSFunction.alertLocation(resp, "글 작성 중 오류가 발생하였습니다.", "../lendmark/write.do");
 				}
 			}
 			else {

@@ -37,17 +37,28 @@ public class LendmarkDAO extends ConnectionPool {
       List<LendmarkBoardDTO> bbs = new Vector<LendmarkBoardDTO>();
       
       String query = " "
-            +" SELECT * FROM ( "
+            +" SELECT idx,id,title,category,ltrim(to_char(price, '999,999,000')),content,postdate,oimg,simg,heart,chattime,visitcount FROM ( "
             +"   SELECT * FROM lendmarklist ";
-      if(map.get("searchWord")!=null) {
-         query += " WHERE (category " +" "
-                 + " LIKE '%"+ map.get("category") +"%' "
-           	   + " OR  content LIKE '%"+map.get("searchWord") +"%' ";
+      if(map.get("category")!=null) {
+         query += " WHERE category " +" "
+                 + " LIKE '%"+ map.get("category") +"%' ";
+         if(map.get("searchWord")!=null) {
+             query+= " AND  (content LIKE '%"+map.get("searchWord") +"%' "
+            		 +" OR title LIKE '%"+map.get("searchWord") +"%')  ";
+          }
       }
+      else {
+    	  if(map.get("searchWord")!=null) {
+    	         query+= " WHERE  (content LIKE '%"+map.get("searchWord") +"%' "
+    	        		 +" OR title LIKE '%"+map.get("searchWord") +"%')  ";
+    	      }
+      }
+      
       query += " "
             +"   ORDER BY idx DESC "
             +") ";
       try {
+    	  System.out.println(query);
          psmt = con.prepareStatement(query);
          rs = psmt.executeQuery();
          while(rs.next()) {
@@ -56,13 +67,14 @@ public class LendmarkDAO extends ConnectionPool {
 		    dto.setId(rs.getString(2));
 		    dto.setTitle(rs.getString(3));
 		    dto.setCategory(rs.getString(4));
-		    dto.setContent(rs.getString(5));
-		    dto.setPostdate(rs.getDate(6));
-		    dto.setOimg(rs.getString(7));
-		    dto.setSimg(rs.getString(8));
-		    dto.setHeart(rs.getString(9));
-		    dto.setChattime(rs.getString(10));
-		    dto.setVisitcount(rs.getString(11));
+		    dto.setPrice(rs.getString(5));
+		    dto.setContent(rs.getString(6));
+		    dto.setPostdate(rs.getString(7));
+		    dto.setOimg(rs.getString(8));
+		    dto.setSimg(rs.getString(9));
+		    dto.setHeart(rs.getString(10));
+		    dto.setChattime(rs.getString(11));
+		    dto.setVisitcount(rs.getString(12));
             
             bbs.add(dto);
          }
@@ -76,16 +88,17 @@ public class LendmarkDAO extends ConnectionPool {
 		int result =0;
 		try {
 			String query = "INSERT INTO lendmarklist ("
-						+ " idx,id,title,content,category,oimg,simg)"
+						+ " idx,id,title,content,category,price,oimg,simg)"
 						+" VALUES ("
-						+" seq_lendlist_num.NEXTVAL, ?, ?, ?, ?, ?, ?)";
+						+" seq_lendlist_num.NEXTVAL, ?, ?, ?, ?, ?, ?,?)";
 			psmt = con.prepareStatement(query);
 			psmt.setString(1, dto.getId());
 			psmt.setString(2, dto.getTitle());
 			psmt.setString(3, dto.getContent());
 			psmt.setString(4, dto.getCategory());
-			psmt.setString(5, dto.getOimg());
+			psmt.setString(5, dto.getPrice());
 			psmt.setString(6, dto.getSimg());
+			psmt.setString(7, dto.getSimg());
 			result = psmt.executeUpdate();
 		}
 		catch(Exception e) {
@@ -97,6 +110,7 @@ public class LendmarkDAO extends ConnectionPool {
    public LendmarkBoardDTO selectView(String idx) {
 	   LendmarkBoardDTO dto = new LendmarkBoardDTO();
 	   String query = "SELECT * FROM lendmarklist WHERE idx=?";
+	   
 	   try {
 		   psmt = con.prepareStatement(query);
 		   psmt.setString(1, idx);
@@ -106,14 +120,17 @@ public class LendmarkDAO extends ConnectionPool {
 			   dto.setId(rs.getString(2));
 			   dto.setTitle(rs.getString(3));
 			   dto.setCategory(rs.getString(4));
-			   dto.setContent(rs.getString(5));
-			   dto.setPostdate(rs.getDate(6));
-			   dto.setOimg(rs.getString(7));
-			   dto.setSimg(rs.getString(8));
-			   dto.setHeart(rs.getString(9));
-			   dto.setChattime(rs.getString(10));
-			   dto.setVisitcount(rs.getString(11));
+			   dto.setPrice(rs.getString(5));
+			   dto.setContent(rs.getString(6));
+			   dto.setPostdate(rs.getString(7));
+			   dto.setOimg(rs.getString(8));
+			   dto.setSimg(rs.getString(9));
+			   dto.setHeart(rs.getString(10));
+			   dto.setChattime(rs.getString(11));
+			   dto.setVisitcount(rs.getString(12));
 		   }
+		   System.out.println(query);
+		   System.out.println(idx);
 	   }
 	   catch(Exception e) {
 		   System.out.println("게시물 상세보기 중 예외발생");
@@ -122,7 +139,7 @@ public class LendmarkDAO extends ConnectionPool {
 	   return dto;
    }
    public void updateVisitCount(String idx) {
-	      String query = "UPDATE mvcboard SET "
+	      String query = "UPDATE lendmarklist SET "
 	            + " visitcount=visitcount+1 "
 	            + " WHERE idx=?";
 	      try {
@@ -134,6 +151,104 @@ public class LendmarkDAO extends ConnectionPool {
 	         System.out.println("방문자수 증가에러 발생");
 	         e.printStackTrace();
 	      }
+   }
+   public boolean heartCheck(String idx,String id) {
+	    boolean result = true;
+	    String query = " SELECT COUNT(*) FROM heartcontrol "
+            + " WHERE idx=? AND id=? ";
+        try {
+	        psmt = con.prepareStatement(query);
+	        psmt.setString(1, idx);
+	        psmt.setString(2, id);
+	        rs = psmt.executeQuery();
+	         
+	        rs.next();
+	        if(rs.getInt(1)==1) {
+	        	result = false;
+	        }
+        }
+        catch(Exception e) {
+        	result = false;
+        	System.out.println("찜 체크 중 에러 발생");
+        	e.printStackTrace();
+        }
+        return result;
+   }
+   public int heartCountCheck(String idx,String id) {
+	   int insertResult = 0;
+        String insert = " INSERT INTO heartcontrol( "
+    		  +" idx, id) "
+    		  +" VALUES( "
+    		  +" ? ,? ) ";
+        String delete = " DELETE heartcontrol where idx=? AND id=? ";
+        	boolean result = heartCheck(idx,id);
+        	try {
+		        if(result) {
+		        	psmt = con.prepareStatement(insert);
+		        	psmt.setString(1, idx);
+		        	psmt.setString(2, id);
+		        	insertResult=psmt.executeUpdate();
+		        }
+		        else {
+		        	psmt = con.prepareStatement(delete);
+		        	psmt.setString(1, idx);
+		        	psmt.setString(2, id);
+		        	psmt.executeUpdate();
+		        }
+	         } 
+	         catch (Exception e) {
+	         //검증에 실패하면 false 처리 해줘야함
+	         result = false;
+	         System.out.println("찜업데이트 중  에러발생");
+	         e.printStackTrace();
+	      }
+	      return insertResult;
+   }
+   public void heartCountPlus(String idx) {
+       String query = "UPDATE lendmarklist SET "
+	            + " heart=heart+1 "
+	            + " WHERE idx=?";
+       try {
+           psmt = con.prepareStatement(query);
+           psmt.setString(1, idx);
+           psmt.executeQuery();
+	         
+	      	} 
+        catch (Exception e) {
+        	System.out.println("찜 플러스 하는 중 에러발생");
+        	e.printStackTrace();
+       }
+   }
+   public void heartCountMinus(String idx) {
+       String query = "UPDATE lendmarklist SET "
+	            + " heart=heart-1 "
+	            + " WHERE idx=?";
+       try {
+           psmt = con.prepareStatement(query);
+           psmt.setString(1, idx);
+           psmt.executeQuery();
+	         
+	      	} 
+        catch (Exception e) {
+        	System.out.println("찜 마이너스 하는 중 에러발생");
+        	e.printStackTrace();
+       }
+   }
+   public int totalHeart(String idx) {
+	   int result = 0;
+	   String query = " SELECT heart FROM lendmarklist "
+			   +" WHERE idx=? ";
+	   try {
+		   psmt = con.prepareStatement(query);
+		   psmt.setString(1, idx);
+		   rs=psmt.executeQuery();
+		   rs.next();
+		   result = rs.getInt(1);
+	   }
+	   catch(Exception e) {
+		   e.printStackTrace();
+	   }
+	   return result;
    }
     public boolean confirmPassword(String idx, String pass) {
 	      boolean result = false;
@@ -199,20 +314,7 @@ public class LendmarkDAO extends ConnectionPool {
         }
         return result;
      }
-    public void heartCountPlus(String idx) {
-        String query = "UPDATE lendmarklist SET "
-	            + " heart=heart+1 "
-	            + " WHERE idx=?";
-        try {
-            psmt = con.prepareStatement(query);
-            psmt.setString(1, idx);
-            psmt.executeQuery();
-	         
-	      	} 
-         catch (Exception e) {
-	         
-        }
-    }
+    
     
     public int MemberRegist(LendmarkMemberDTO dto) {
 		int result =0;

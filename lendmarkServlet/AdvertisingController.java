@@ -12,12 +12,12 @@ import javax.servlet.http.HttpSession;
 public class AdvertisingController extends HttpServlet {
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String id = req.getParameter("id");
-		
+		HttpSession session = req.getSession();
+		String id = (String)session.getAttribute("USER_ID");
+		System.out.println(id);
 		if(id!=null) {
 			LendmarkDAO dao = new LendmarkDAO();
 			LendmarkMemberDTO dto = dao.memberView(id);
-			HttpSession session = req.getSession();
 			session.setAttribute("dto", dto);
 		}
 		resp.sendRedirect("../lendmark/advertiseView.jsp");

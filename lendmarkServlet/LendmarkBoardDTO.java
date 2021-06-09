@@ -6,10 +6,9 @@ public class LendmarkBoardDTO {
 	 private String title;
 	 private String content;
 	 private String price;
-	 private java.sql.Date postdate;
+	 private String postdate;
 	 private String oimg;
 	 private String simg;
-	 private String heartcount;
 	 private String visitcount;
 	 private String category;
 	 private String chattime;
@@ -63,10 +62,11 @@ public class LendmarkBoardDTO {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public java.sql.Date getPostdate() {
+
+	public String getPostdate() {
 		return postdate;
 	}
-	public void setPostdate(java.sql.Date postdate) {
+	public void setPostdate(String postdate) {
 		this.postdate = postdate;
 	}
 	public String getOimg() {
@@ -80,12 +80,6 @@ public class LendmarkBoardDTO {
 	}
 	public void setSimg(String simg) {
 		this.simg = simg;
-	}
-	public String getHeartcount() {
-		return heartcount;
-	}
-	public void setHeartcount(String heartcount) {
-		this.heartcount = heartcount;
 	}
 	public String getVisitcount() {
 		return visitcount;

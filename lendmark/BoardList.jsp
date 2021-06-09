@@ -9,6 +9,7 @@
 	.product-Session{
 		position: relative;
 		overflow: hidden;
+		
 	}
 	.product-Session-font{
 		margin : 0px;
@@ -16,6 +17,7 @@
 		border : 0px;
 		font : inherit;
 		vertical-align : baseline;
+		
 	}
 	.product-Session-box{
 		display : flex;
@@ -25,11 +27,14 @@
 		width : 196px;
 		margin-right : 11px;
 		margin-bottom : 11px;
+		
 	}
 	.product-LinkBox{
 		border : 1px solid rgb(238,238,238);
 		background : rgb(255,255,255);
 		display : block;
+		text-overflow : ellipsis;
+		
 	}
 	.inner-imgBox{
 		position : relative;
@@ -42,12 +47,16 @@
 		height : 80px;
 	}
 	.title-box{
+		display : inline-block;
+		width : 194px;
 		position : relative;
-		font-size: 14px;
-		padding-bottom: 20px;
+		font-size: 18px;
+		/* padding-bottom: 20px; */
 		text-overflow : ellipsis;
 		white-space : nowrap;
 		overflow: hidden;
+		color : black;
+		
 	}
 	.price-Session{
 		display: flex;
@@ -61,10 +70,11 @@
 		text-overflow: ellipsis;
 		white-space: nowrap;
 		overflow: hidden;
+		color : black;
 		
 	}
 	.post-time{
-		font-size: 12px
+		font-size: 12px;
 		color : rgb(136,136,136);
 	}
 </style>
@@ -81,28 +91,49 @@
 			</div>
 		</div>
 		<div class="col-12 pt-3">
-			<h3>카테고리 - <small>${category }</small></h3>
+			<div style="display:flex; justify-content: center;">
+				<c:choose>
+					<c:when test="${param.category eq 'fassion' }">
+						<h3 style="color: orange; font-weight: bold; font-family:'Architects Daughter'; ">패션</h3>
+					</c:when>
+					<c:when test="${param.category eq 'sports' }">
+						<h3 style="color: orange; font-weight: bold; font-family:'Architects Daughter'; ">스포츠</h3>
+					</c:when>
+					<c:when test="${param.category eq 'electronics' }">
+						<h3 style="color: orange; font-weight: bold; font-family:'Architects Daughter'; ">전자제품</h3>
+					</c:when>
+					<c:when test="${param.category eq 'furniture' }">
+						<h3 style="color: orange; font-weight: bold; font-family:'Architects Daughter'; ">가구</h3>
+					</c:when>
+					<c:otherwise>
+						<h3 style="color: orange; font-weight: bold; font-family:'Architects Daughter'; ">category</h3>
+					</c:otherwise>
+				</c:choose>
+				
+			</div>
 			<div class ="product-Session">
-				<div class="product-Session-font">
+				<div class="product-Session-font"> 
 					<div class="product-Session-box">
 					<c:choose>
 						<c:when test="${empty boardLists }">
-							<h4>등록된 게시물이 없습니다.</h4>
+							<div style=" justify-content: center; margin-left: 415px; margin-top:50px; color: orange; font-weight: bold; font-family:'Architects Daughter';">
+								<h3>등록된 게시물이 없습니다.</h3> 
+							</div>
 						</c:when>
 						<c:otherwise>
 							<c:forEach items="${boardLists }" var="product" varStatus="loop">
 								<div class="product-Each-space">
-									<a class=".product-LinkBox" href="product-View.do?idx=${product.idx }" >
+									<a class=".product-LinkBox" href="view.do?idx=${product.idx }" >
 										<span class="inner-imgBox">
-											<img src="../Uploads/${dto.sfile }" alt="" style="width : 194px; height : 194px "/>
+											<img src="../Uploads/${product.simg }" alt="상품사진" style="width : 194px; height : 194px "/>
 										</span>
-										<span class = "inner-textBox">
+										<span class = "inner-textBox" >
 											<span class = "title-box">
-												${product.title}
+												${product.title }
 											</span>
 											<span class = "price-Session">
 												<span class= "price">
-													${product.price }
+													${product.price }원
 												</span>
 											</span>
 											<span class = "post-time">
@@ -120,20 +151,9 @@
 			
 		</div>
 	</div>
-	<div class="row border border-dark border-bottom-0 border-right-0 border-left-0"></div>
-	<div class="row mb-5 mt-3">		 
-		<div class="col-2">
-			<h3>겸이아빠&trade;</h3>
-		</div>
-		<div class="col-10 text-center">
-			Email : nakjasabal@naver.com&nbsp;&nbsp;
-			Mobile : 010-7906-3600&nbsp;&nbsp;
-			Address : 서울시 금천구 가산동 426-5 월드메르디앙2차 1강의실
-			<br/>
-			copyright &copy; 2019 한국소프트웨어인재개발원.
-			All right reserved.
-		</div>
-	</div>
+<div style="height:250px"></div> 
+<div class="row border border-dark border-bottom-0 border-right-0 border-left-0"></div>
+<jsp:include page="./inc/boardBottom.jsp" />
 </body>
 </html>
 

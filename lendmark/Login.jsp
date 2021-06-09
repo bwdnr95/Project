@@ -87,7 +87,7 @@ if(session.getAttribute("USER_ID")==null){
 <% }
 %>
 	</div> 
-	<div style="height:250px"></div> 
+<div style="height:250px"></div> 	
 <jsp:include page="./inc/boardBottom.jsp" />
 </body>
 </html>
