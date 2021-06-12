@@ -17,7 +17,6 @@
 $(function(){
 	$(document).on("change","input[type=file]",handleImgFileSelect);
 	$(".submit-button").click(function(){
-		$("input[type=file]").remove("#display-"+idx);
 		document.writeFrm.submit();
 	});
 	
@@ -68,6 +67,7 @@ $(function(){
 		}
 		if($(this).val()=='buyImpos'){
 			console.log("되냐");
+			console.log($('.test').val());
 			console.log(check);
 			if($('#구매불가').prop('checked')==true && check=='left'){
 				$("#buyAvail").toggleClass('uncheck');
@@ -145,7 +145,7 @@ $(function(){
 			var change = "<input type='file' id='display-"+imgidx+"' name='image-"+imgidx+"' accept='image/*'>";
 				
 				$("#put-img").append(change);
-				$("#display-"+idx).css({"display":"none"});
+				/* $("#display-"+idx).css({"display":"none"}); */
 				console.log($("#put-img").html()); 
 				imgidx++
 			reader.readAsDataURL(f);
@@ -164,12 +164,7 @@ $(function(){
 		}
 		if (f.price.value == "") {
 			alert("가격을 입력하세요");
-			f.price.focus();
-			return false;
-		}
-		if(f.content.value ==""){
-			alert("내용을 입력하세요");
-			f.content.focus();
+			f.rpice.focus();
 			return false;
 		}
 	}
@@ -223,7 +218,7 @@ $(function(){
     border-image: initial;
 	}
 	input[type="file"] {
-    appearance: none;
+    /* appearance: none; */
     background-color: initial;
     cursor: default;
     align-items: baseline;
@@ -233,7 +228,7 @@ $(function(){
     text-align: start !important;
     padding: initial;
     border: initial;
-    overflow: hidden !important;
+    /* overflow: hidden !important; */
 	}
 	h1, h2, h3, h4, h5, h6 {
 	    font-size: 14px;
@@ -863,7 +858,7 @@ $(function(){
 					<li class="availablity-column-box">
 						<div class="availablity-column-title">설명</div>
 						<div class="content-inner">
-							<textarea placeholder="상품 설명을 입력해주세요." rows="6" class="content-area" name="content"></textarea>
+							<textarea placeholder="상품 설명을 입력해주세요." rows="6" class="sc-ibxvc efdJUr" name="content"></textarea>
 						</div>
 					</li>
 				</ul>

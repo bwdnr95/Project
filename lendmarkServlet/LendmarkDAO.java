@@ -158,6 +158,7 @@ public class LendmarkDAO extends ConnectionPool {
 	            dto.setMinimumPeriod(rs.getString(13));
 	            dto.setMaximumPeriod(rs.getString(14));
 	            dto.setsImg(rs.getString(15));
+	            System.out.println("sImg : "+rs.getString(15));
 		   }
 		   System.out.println(query);
 		   System.out.println(idx);
@@ -246,6 +247,21 @@ public class LendmarkDAO extends ConnectionPool {
 	      	} 
         catch (Exception e) {
         	System.out.println("찜 플러스 하는 중 에러발생");
+        	e.printStackTrace();
+       }
+   }
+   public void postPlus(String id) {
+       String query = "UPDATE lendmarkmember SET "
+	            + " post=post+1 "
+	            + " WHERE id=?";
+       try {
+           psmt = con.prepareStatement(query);
+           psmt.setString(1, id);
+           psmt.executeQuery();
+	         
+	      	} 
+        catch (Exception e) {
+        	System.out.println("게시물갯수 추가 하는 중 에러발생");
         	e.printStackTrace();
        }
    }
@@ -412,6 +428,9 @@ public class LendmarkDAO extends ConnectionPool {
 				dto.setAno_num2(rs.getString("Ano_num2"));
 				dto.setAno_num3(rs.getString("Ano_num3"));
 				dto.setRegidate(rs.getDate("regidate"));
+				dto.setPost(rs.getString("post"));
+				dto.setFollower(rs.getString("follower"));
+				dto.setFollowing(rs.getString("following"));
 			}
 		}
 		catch(Exception e) {
@@ -510,7 +529,8 @@ public class LendmarkDAO extends ConnectionPool {
 						+" seq_img_num.nextval, ?, ?, ?, ?, ? )";
 			
 			for(ImgUploadDTO dto : list) {
-				
+				System.out.println("insertImg에서"+result+"번째 oImg"+dto.getoImg());
+				System.out.println("insertImg에서"+result+"번째 sImg"+dto.getsImg());
 				psmt = con.prepareStatement(query);
 				psmt.setString(1, dto.getBoardidx());
 				psmt.setString(2, dto.getId());
@@ -531,4 +551,23 @@ public class LendmarkDAO extends ConnectionPool {
 		
 		return result;
 	}
+	   public List<ImgUploadDTO> getImg(String boardIdx) {
+		   List<ImgUploadDTO> bbs = new Vector<ImgUploadDTO>();
+		   String query = " SELECT simg FROM imgupload "
+				   +" WHERE boardidx=? ";
+		   try {
+			   psmt = con.prepareStatement(query);
+			   psmt.setString(1, boardIdx);
+			   rs=psmt.executeQuery();
+			   while(rs.next()) {
+				   ImgUploadDTO dto = new ImgUploadDTO();
+				   dto.setsImg(rs.getString("simg"));
+				   bbs.add(dto);
+			   }
+		   }
+		   catch(Exception e) {
+			   e.printStackTrace();
+		   }
+		   return bbs;
+	   }
 }

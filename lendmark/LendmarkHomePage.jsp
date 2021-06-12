@@ -121,6 +121,7 @@
 		font-size: 12px
 		color : rgb(136,136,136);
 	}
+
 </style>
 </head>
 <body>
@@ -214,7 +215,7 @@
 			
 		</div>
 	</div>
-	<div style="height:250px"></div> 
+	<div style="height:500px"></div> 
 	<jsp:include page="./inc/boardBottom.jsp" />
 </body>
 </html>

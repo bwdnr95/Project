@@ -63,7 +63,7 @@ public class WriteController2 extends HttpServlet {
 			String maximumPeriod = mr.getParameter("maximumPeriod");
 			
 			LendmarkBoardDTO dto = new LendmarkBoardDTO();
-			ImgUploadDTO dto2 = new ImgUploadDTO();
+			
 			
 			LendmarkDAO dao = new LendmarkDAO();
 			
@@ -74,9 +74,11 @@ public class WriteController2 extends HttpServlet {
 				
 			List<ImgUploadDTO> bbs = new Vector<ImgUploadDTO>();
 			int result =0;
+			String boardidx = null;
 			while(files.hasMoreElements()) { 
-			
+				ImgUploadDTO dto2 = new ImgUploadDTO();
 				String tagName = (String)files.nextElement();
+				System.out.println(tagName);
 				String fileName = mr.getFilesystemName(tagName);
 				System.out.println(fileName);
 				String nowTime = new SimpleDateFormat("yyyyMMdd_HmsS").format(new Date());
@@ -87,7 +89,7 @@ public class WriteController2 extends HttpServlet {
 				File oldImg = new File(saveDirectory+File.separator+fileName);
 				File newImg = new File(saveDirectory+File.separator+newFileName);
 				oldImg.renameTo(newImg);
-				String boardidx = null;
+				
 				if(index==0) {
 					dto.setId(id);
 					dto.setTitle(title);
@@ -98,6 +100,12 @@ public class WriteController2 extends HttpServlet {
 					dto.setSellAvailable(sellAvailable);
 					dto.setBargainAvailable(bargainAvailable);
 					dto.setMinimumPeriod(minimumPeriod);
+					dto2.setId(id);
+					dto2.setTitle(title);
+					dto2.setoImg(fileName);
+					System.out.println("dto2에 저장되는 fileName :" +fileName);
+					dto2.setsImg(newFileName);
+					System.out.println("dto2에 저장되는 newFileName :" +newFileName);
 					if(maximumPeriod==null) {
 						dto.setMaximumPeriod("90");
 					}
@@ -106,6 +114,9 @@ public class WriteController2 extends HttpServlet {
 					}
 					result = dao.insertTrade(dto);
 					boardidx = dao.searchBoardidx(id, title);
+					dto2.setBoardidx(boardidx);
+					bbs.add(dto2);
+					System.out.println(bbs.size());
 				}
 				else {
 					dto2.setBoardidx(boardidx);
@@ -126,7 +137,8 @@ public class WriteController2 extends HttpServlet {
 
 				if(result==1) {
 					if(saveImgNum==bbs.size()) {
-						JSFunction.alertLocation(resp, "판매글 작성이 완료되었습니다.", "../lendmark/view.do?category="+category);
+						dao.postPlus(id);
+						JSFunction.alertLocation(resp, "판매글 작성이 완료되었습니다.", "../lendmark/view.do?idx="+boardidx);
 					}
 					else {
 						JSFunction.alertLocation(resp, "서버에 이미지 저장 중 오류가 발생하였습니다", "../lendmark/write.do");

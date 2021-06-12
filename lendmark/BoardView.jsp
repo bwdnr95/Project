@@ -2,10 +2,58 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <jsp:include page="./inc/boardHead.jsp" />
 <script src="../common/jquery/jquery-3.6.0.js"></script>
 <script>
+
+
 	$(function(){
+		var moveIndex =0;
+		var imgIndex = ${fn:length(imgList)};
+		console.log("이미지인덱스: "+imgIndex);
+		
+		$(".product-photoBox2").hover(function(){
+			if(moveIndex==0){
+				$(".next-photo").css({"display":"flex"});
+				$(".prev-photo").css({"display":"none"});	
+			}
+			else if(moveIndex==(imgIndex-1)){
+				$(".next-photo").css({"display":"none"});
+				$(".prev-photo").css({"display":"flex"});
+			}
+			else if(moveIndex<0 || moveIndex>=imgIndex){
+				$(".next-photo").css({"display":"none"});
+				$(".prev-photo").css({"display":"none"});
+			}
+			else{
+				$(".next-photo").css({"display":"flex"});
+				$(".prev-photo").css({"display":"flex"});
+			}
+		},
+		function(){
+			$(".next-photo").css({"display":"none"});
+			$(".prev-photo").css({"display":"none"});
+			
+		});
+		$(".prev-photo").click(function(){
+			if(!(moveIndex<=0)){
+				$('#img-'+moveIndex).css({"opacity":"0"});
+				moveIndex--;
+				$('#img-'+moveIndex).css({"opacity":"1"});
+				console.log("moveIndex : "+moveIndex);	
+			}
+			
+		});
+		$(".next-photo").click(function(){
+			if(moveIndex<(imgIndex-1)){
+				$('#img-'+moveIndex).css({"opacity":"0"});
+				moveIndex++;
+				$('#img-'+moveIndex).css({"opacity":"1"});
+				console.log("moveIndex : "+moveIndex);
+			}
+			
+		});
 		$.ajax({
 			url : './function/HeartCheck.jsp',
 			type : 'get',
@@ -71,6 +119,8 @@
 			
 		});
 	});
+	
+	
 </script>
 <style>
 	html {
@@ -157,9 +207,11 @@
 		position: relative;
 	}
 	.product-Image{
-		width : 100%;
-		height: 100%;
-		position: relative;
+		width: 100%;
+		height : 100%;
+	    position: absolute;
+	    opacity: 0;
+	    transition: opacity 0.2s ease-in-out 0s;
 	}
 	.photo-absol{
 		width:100%;
@@ -851,6 +903,39 @@
     	border: 1px solid rgb(223, 0, 0);
     	color: rgb(255, 255, 255);
 	}
+	.next-photo{
+	    border-radius: 50%;
+	    width: 40px;
+	    height: 40px;
+	    position: absolute;
+	    top: 50%;
+	    transform: translateY(-50%);
+	    background: rgba(33, 33, 33, 0.35);
+	    display: none;
+	    -webkit-box-align: center;
+	    align-items: center;
+	    -webkit-box-pack: center;
+	    justify-content: center;
+	    right: 20px;
+	}
+	.prev-photo{
+		border-radius: 50%;
+	    width: 40px;
+	    height: 40px;
+	    position: absolute;
+	    top: 50%;
+	    transform: translateY(-50%);
+	    background: rgba(33, 33, 33, 0.35);
+	    display: none;
+	    -webkit-box-align: center;
+	    align-items: center;
+	    -webkit-box-pack: center;
+	    justify-content: center;
+	    left: 20px;
+	}
+	#img-0{
+		opacity : 1;
+	}
 </style>
 <body>
 <div class="container">
@@ -861,10 +946,24 @@
 				<div class="product-photoBox">
 					<div class="product-photoBox2">
 						<div class="product-photoBox3">
-							<img src="../Uploads/${dto.simg }" class="product-Image">
+							<c:forEach items="${imgList }" var="img" varStatus="loop">
+								<img src="../Uploads/${img.sImg }" id="img-${loop.index }" class="product-Image">
+							</c:forEach>
+							
+							
 						</div>
 						<div class="photo-absol"></div>
-					</div>
+							<button direction="prev" class="prev-photo">
+								<img
+									src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAsCAYAAAB/nHhDAAAAAXNSR0IArs4c6QAAARZJREFUWAntl9ENgkAMhpF32IFBYAwHYB7dBjdxCyfw6fx+c0dOSIghLQZDk6ZE49drf0qxKJzt5MUPITSwzy584C3+wIN5Apg9/hQcG8wSACvxi6jRrsTSJAGgCr9FsE7fm4AFAdbg9whX3ztL+ChmTKI7x8YA5mKqPbUJGdAh5ryTtGW/Ymoak+13Mtu5Kis/oRebilmtPOfnzzi1JtNHTKUC7vOYTXWQQKbHrJ2YCU602TgZcHbJyQeVgNluopQJ8FRk7VX7yoBOF4jNbZoqUSRJh7/fZ4jas3YrMCUSNMIJTncX4Bp3n49D/CTrdxFN/ld8u12dN5OWHZOfN2T5+leTv434y7Wv/JaWje9X+/wjnhf+Ap3Avf1JQDIIAAAAAElFTkSuQmCC"
+									width="12" height="22" alt="이전 페이지 이동 버튼 아이콘">
+							</button>
+							<button direction="next" class="next-photo">
+								<img
+									src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAsCAYAAAB/nHhDAAAAAXNSR0IArs4c6QAAAQVJREFUWAntl9EJg0AQRMV/7SGFaDE2kSaSbkwn6SIV+HV5Q7IgeiCRXcFwC8PJobPrzK3nVVV0pJSu4BKWB3LFC3QhSSAelYGYwOCeBNIa3IHFjYs6ItEAsd5C8QBNRJIeYvmheAJ/80X6JWcIMh/iFkgmRTF/e60gUzF/Wya7A7mWna+vQOl8E2g9Is//dv4x5q9FdZiZd77/+v0UmBzqzFNQ/XxnHPN37ZhVNwPt5xZ+JsPYgJgNCuJlo/U7BMg/AnkHYn4SIJ6bKXnafBk/zkJUzFxrhiznNVPdaHHezvQ7+aDFoWb6HECoWp0ZY6ZWPOQxn1lrJxIoQo+xsQdxe5Oo8Q2tG8U3KxMfPwAAAABJRU5ErkJggg=="
+									width="12" height="22" alt="다음 페이지 이동 버튼 아이콘">
+							</button>
+						</div>
 				</div>
 				<div class="product-title">
 					<div class="product-title2">
@@ -872,7 +971,7 @@
 							<div class="product-title4">
 								<div class="product-title5">${dto.title }</div>
 									<div class="product-title6">
-										<div class="product-price">${dto.price }<span>원</span></div>
+										<div class="product-price">${dto.price }<span>원</span> <small style="color: red; font-size: 16px;">/일</small></div>
 										
 									</div>
 							</div>
@@ -899,22 +998,36 @@
 								</div>
 								<div class="info-textbox">
 									<div class="info-place">
-										<div class="product-info-text">상품상태</div>
-										<div class="product-info-text2">중고</div>
+										<div class="product-info-text">상품판매여부</div>
+										<c:choose>
+											<c:when test="${dto.sellAvailable eq 'buyPos'}">
+												<div class="product-info-text2">판매가능</div>
+											</c:when>
+											<c:otherwise>
+												<div class="product-info-text2">판매불가능</div>
+											</c:otherwise>
+										</c:choose>
+										
 									</div>
 									<div class="info-place">
-										<div class="product-info-text">교환여부</div>
-										<div class="product-info-text2">교환불가능</div>
+										<div class="product-info-text">가격제안여부</div>
+										<c:choose>
+											<c:when test="${dto.bargainAvailable eq 'pos'}">
+												<div class="product-info-text2">제안가능</div>
+											</c:when>
+											<c:otherwise>
+												<div class="product-info-text2">제안불가능</div>
+											</c:otherwise>
+										</c:choose>										
 									</div>
 									<div class="info-place">
-										<div class="product-info-text">배송비</div>
-										<div class="product-info-text2">배송비 별도</div>
+										<div class="product-info-text">최소렌탈기간</div>
+										<div class="product-info-text2">${dto.minimumPeriod}</div>
 									</div>
 									<div class="info-place">
-										<div class="product-info-text">거래지역</div>
+										<div class="product-info-text">최대렌탈기간</div>
 										<div class="product-info-text2" style="color : rgb(98, 177, 217); ">
-											${addr }
-											<div class="location-confirm">지역인증</div>
+											${dto.maximumPeriod}
 										</div>
 									</div>
 								</div>
@@ -962,7 +1075,22 @@
 										카테고리
 									</div>
 									<div class="include-textBox">
-										<a href="https://m.bunjang.co.kr/categories/400082999?order=date&amp;page=1"><span class="category-text">${dto.category }</span></a>
+										<a href="../lendmark.list.do?category="${dto.category } >
+											<c:choose>
+												<c:when test="${dto.category eq 'fassion' }">
+													<span class="category-text">패션</span>
+												</c:when>
+												<c:when test="${dto.category eq 'sports' }">
+													<span class="category-text">스포츠</span>
+												</c:when>
+												<c:when test="${dto.category eq 'electronics' }">
+													<span class="category-text">전자제품</span>
+												</c:when>
+												<c:when test="${dto.category eq 'furniture' }">
+													<span class="category-text">가구</span>
+												</c:when>
+											</c:choose>
+										</a>
 									</div>
 								</div>
 								<div class="bottom-include-box">
@@ -1034,10 +1162,10 @@
 									<img src="../images/48logo.png" width="48" height="48" alt="판매자 프로필 이미지">
 								</a>
 								<div class="">
-									<a class="seller-id" href="https://m.bunjang.co.kr/shop/4023755/products">yyul75</a>
+									<a class="seller-id" href="https://m.bunjang.co.kr/shop/4023755/products">${dto.id }</a>
 									<div class="seller-etcBox">
-										<a class="seller-etc" href="https://m.bunjang.co.kr/shop/4023755/products">상품24</a>
-										<a class="seller-etc" href="https://m.bunjang.co.kr/shop/4023755/followers">팔로워3</a>
+										<a class="seller-etc" href="https://m.bunjang.co.kr/shop/4023755/products">상품${memberDTO.post }</a>
+										<a class="seller-etc" href="https://m.bunjang.co.kr/shop/4023755/followers">팔로워${memberDTO.follower }</a>
 									</div>
 								</div>
 							</div>
@@ -1118,23 +1246,3 @@
 <jsp:include page="./inc/boardBottom.jsp" />
 </body>
 </html>
-
-<!-- 
-	<i class='fas fa-edit' style='font-size:20px'></i>
-	<i class='fa fa-cogs' style='font-size:20px'></i>
-	<i class='fas fa-sign-in-alt' style='font-size:20px'></i>
-	<i class='fas fa-sign-out-alt' style='font-size:20px'></i>
-	<i class='far fa-edit' style='font-size:20px'></i>
-	<i class='fas fa-id-card-alt' style='font-size:20px'></i>
-	<i class='fas fa-id-card' style='font-size:20px'></i>
-	<i class='fas fa-id-card' style='font-size:20px'></i>
-	<i class='fas fa-pen' style='font-size:20px'></i>
-	<i class='fas fa-pen-alt' style='font-size:20px'></i>
-	<i class='fas fa-pen-fancy' style='font-size:20px'></i>
-	<i class='fas fa-pen-nib' style='font-size:20px'></i>
-	<i class='fas fa-pen-square' style='font-size:20px'></i>
-	<i class='fas fa-pencil-alt' style='font-size:20px'></i>
-	<i class='fas fa-pencil-ruler' style='font-size:20px'></i>
-	<i class='fa fa-cog' style='font-size:20px'></i>
-	아~~~~힘들다...ㅋ
- -->

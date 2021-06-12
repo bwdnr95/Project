@@ -21,6 +21,9 @@ public class LendmarkMemberDTO {
 	private String ano_num2;
 	private String ano_num3;
 	private java.sql.Date regidate;
+	private String post;
+	private String follower;
+	private String following;
 	public String getId() {return id;}
 	public void setId(String id) {this.id = id;}
 	public String getPass() {return pass;}
@@ -53,6 +56,11 @@ public class LendmarkMemberDTO {
 	public void setAno_num3(String ano_num3) {this.ano_num3 = ano_num3;}
 	public java.sql.Date getRegidate() {return regidate;}
 	public void setRegidate(java.sql.Date regidate) {this.regidate = regidate;}
-	
+	public String getPost() {return post;}
+	public void setPost(String post) {this.post = post;}
+	public String getFollower() {return follower;}
+	public void setFollower(String follower) {this.follower = follower;}
+	public String getFollowing() {return following;}
+	public void setFollowing(String following) {this.following = following;}
 	
 }
