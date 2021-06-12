@@ -23,8 +23,8 @@ import com.oreilly.servlet.MultipartRequest;
 
 import fileupload.FileUtil;
 import utils.JSFunction;
-@WebServlet("/lendmark/write1.do")
-public class WriteController extends HttpServlet { 
+@WebServlet("/lendmark/write.do")
+public class WriteController2 extends HttpServlet { 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		HttpSession session = req.getSession();
@@ -48,8 +48,6 @@ public class WriteController extends HttpServlet {
 		//파일 업로드 제한 용량
 		int maxPostSize = Integer.parseInt(application.getInitParameter("maxPostSize"))*5;
 		//파일 업로드 처리
-		ArrayList sImg = new ArrayList();
-		ArrayList oImg = new ArrayList();
 		MultipartRequest mr = FileUtil.uploadFile(req, saveDirectory, maxPostSize);
 		if(mr!=null) {
 			//파일 외 파라미터 받기
@@ -70,65 +68,58 @@ public class WriteController extends HttpServlet {
 			LendmarkDAO dao = new LendmarkDAO();
 			
 			//서버에 저장된 파일명 변경하기
+			
+			//files는 객체가 저장된 input type=file의 name값을 반환한다.
 			Enumeration files = mr.getFileNames();
 				
 			List<ImgUploadDTO> bbs = new Vector<ImgUploadDTO>();
-			
+			int result =0;
 			while(files.hasMoreElements()) { 
 			
-				String fileName = (String)files.nextElement();
-				sImg.add(mr.getFilesystemName(fileName));
-				oImg.add(mr.getOriginalFileName(fileName));
-			}
-			System.out.println("sImg사이즈:"+sImg.size());
-			System.out.println("oImg사이즈:"+oImg.size());
-			
-			
-			Object firstImg = sImg.get(0);
-			String firstNowTime = new SimpleDateFormat("yyyyMMdd_HmsS").format(new Date());
-			int firstExtIdx = ((String) firstImg).lastIndexOf(".");
-			String firstNewFileName = firstNowTime + ((String) firstImg).substring(firstExtIdx,((String) firstImg).length());
-			System.out.println(firstNewFileName);
-			dto.setId(id);
-			dto.setTitle(title);
-			dto.setContent(content);
-			dto.setsImg(firstNewFileName);
-			dto.setPrice(price);
-			dto.setCategory(category);
-			dto.setSellAvailable(sellAvailable);
-			dto.setBargainAvailable(bargainAvailable);
-			dto.setMinimumPeriod(minimumPeriod);
-			if(maximumPeriod.equals(null)) {
-				dto.setMaximumPeriod("90");
-			}
-			else {
-				dto.setMaximumPeriod(maximumPeriod);
-			}
-			int result = dao.insertTrade(dto);
-			String boardidx = dao.searchBoardidx(id, title);
-			for(int i=0; i<sImg.size();i++) {
-				if(index==0) {
-					
-				}
+				String tagName = (String)files.nextElement();
+				String fileName = mr.getFilesystemName(tagName);
+				System.out.println(fileName);
 				String nowTime = new SimpleDateFormat("yyyyMMdd_HmsS").format(new Date());
-				int extIdx = ((String) sImg.get(i)).lastIndexOf(".");
-				String newFileName = nowTime + ((String) sImg.get(i)).substring(extIdx,((String) sImg.get(i)).length());
+				int extIdx = fileName.lastIndexOf(".");
+				System.out.println(extIdx);
+				String newFileName = nowTime + fileName.substring(extIdx,fileName.length());
 				
-				File oldImg = new File(saveDirectory+File.separator+((String) sImg.get(i)));
+				File oldImg = new File(saveDirectory+File.separator+fileName);
 				File newImg = new File(saveDirectory+File.separator+newFileName);
 				oldImg.renameTo(newImg);
-				dto2.setBoardidx(boardidx);
-				dto2.setId(id);
-				dto2.setTitle(title);
-				dto2.setoImg(((String) sImg.get(i)));
-				dto2.setsImg(newFileName);
-				
-				bbs.add(dto2);
-			
-				System.out.println("bbs리스트 사이즈"+bbs.size());
-				System.out.println("for문 index"+i);
-				
+				String boardidx = null;
+				if(index==0) {
+					dto.setId(id);
+					dto.setTitle(title);
+					dto.setContent(content);
+					dto.setsImg(newFileName);
+					dto.setPrice(price);
+					dto.setCategory(category);
+					dto.setSellAvailable(sellAvailable);
+					dto.setBargainAvailable(bargainAvailable);
+					dto.setMinimumPeriod(minimumPeriod);
+					if(maximumPeriod==null) {
+						dto.setMaximumPeriod("90");
+					}
+					else {
+						dto.setMaximumPeriod(maximumPeriod);
+					}
+					result = dao.insertTrade(dto);
+					boardidx = dao.searchBoardidx(id, title);
+				}
+				else {
+					dto2.setBoardidx(boardidx);
+					dto2.setId(id);
+					dto2.setTitle(title);
+					dto2.setoImg(fileName);
+					dto2.setsImg(newFileName);
+					
+					bbs.add(dto2);
+				}
+				index++;
 			}
+			
+
 			int saveImgNum=dao.insertImg(bbs);
 			
 				//DAO에서 insert처리

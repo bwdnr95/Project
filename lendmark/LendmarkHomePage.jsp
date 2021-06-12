@@ -142,7 +142,7 @@
 			<div class ="category-Session">
 				<div class="category-firstLine">
 					<div class="category-Each-space">
-						<a class="category-Linkbox" href="list.do?category=fassion">
+						<a class="category-Linkbox" href="list.do?category=fashion">
 							<span class ="inner-category-icon">
 								<i class='fas fa-tshirt' style='font-size:36px; color : gray;'></i>
 							</span>

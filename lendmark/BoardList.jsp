@@ -125,7 +125,7 @@
 								<div class="product-Each-space">
 									<a class=".product-LinkBox" href="view.do?idx=${product.idx }" >
 										<span class="inner-imgBox">
-											<img src="../Uploads/${product.simg }" alt="상품사진" style="width : 194px; height : 194px "/>
+											<img src="../Uploads/${product.sImg }" alt="상품사진" style="width : 194px; height : 194px "/>
 										</span>
 										<span class = "inner-textBox" >
 											<span class = "title-box">

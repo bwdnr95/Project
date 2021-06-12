@@ -56,7 +56,7 @@
 							<td>
 								<select name="category" >
 			                        <option value="">카테고리를 입력해주세요.</option>
-			                        <option value="fassion">패션</option>
+			                        <option value="fashion">패션</option>
 			                        <option value="sports">스포츠</option>
 			                        <option value="electronics">전자제품</option>
 			                        <option value="furniture">가구</option>

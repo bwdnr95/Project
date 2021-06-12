@@ -5,15 +5,41 @@ public class LendmarkBoardDTO {
 	private String id;
 	 private String title;
 	 private String content;
+	 private String sImg;
 	 private String price;
 	 private String postdate;
-	 private String oimg;
-	 private String simg;
 	 private String visitcount;
 	 private String category;
 	 private String chattime;
 	 private String heart;
-	 
+	 private String sellAvailable;
+	 private String bargainAvailable;
+	 private String minimumPeriod;
+	 private String maximumPeriod;
+	public String getSellAvailable() {
+		return sellAvailable;
+	}
+	public void setSellAvailable(String sellAvailable) {
+		this.sellAvailable = sellAvailable;
+	}
+	public String getBargainAvailable() {
+		return bargainAvailable;
+	}
+	public void setBargainAvailable(String bargainAvailable) {
+		this.bargainAvailable = bargainAvailable;
+	}
+	public String getMinimumPeriod() {
+		return minimumPeriod;
+	}
+	public void setMinimumPeriod(String minimumPeriod) {
+		this.minimumPeriod = minimumPeriod;
+	}
+	public String getMaximumPeriod() {
+		return maximumPeriod;
+	}
+	public void setMaximumPeriod(String maximumPeriod) {
+		this.maximumPeriod = maximumPeriod;
+	}
 	public String getPrice() {
 		return price;
 	}
@@ -62,24 +88,17 @@ public class LendmarkBoardDTO {
 	public void setContent(String content) {
 		this.content = content;
 	}
-
+	public String getsImg() {
+		return sImg;
+	}
+	public void setsImg(String sImg) {
+		this.sImg = sImg;
+	}
 	public String getPostdate() {
 		return postdate;
 	}
 	public void setPostdate(String postdate) {
 		this.postdate = postdate;
-	}
-	public String getOimg() {
-		return oimg;
-	}
-	public void setOimg(String oimg) {
-		this.oimg = oimg;
-	}
-	public String getSimg() {
-		return simg;
-	}
-	public void setSimg(String simg) {
-		this.simg = simg;
 	}
 	public String getVisitcount() {
 		return visitcount;

@@ -37,7 +37,7 @@ public class LendmarkDAO extends ConnectionPool {
       List<LendmarkBoardDTO> bbs = new Vector<LendmarkBoardDTO>();
       
       String query = " "
-            +" SELECT idx,id,title,category,ltrim(to_char(price, '999,999,000')),content,postdate,oimg,simg,heart,chattime,visitcount FROM ( "
+            +" SELECT idx,id,title,category,ltrim(to_char(price, '999,999,000')),content,postdate,heart,chattime,visitcount,sellAvailable,bargainAvailable,minimumPeriod,maximumPeriod,simg FROM ( "
             +"   SELECT * FROM lendmarklist ";
       if(map.get("category")!=null) {
          query += " WHERE category " +" "
@@ -70,12 +70,14 @@ public class LendmarkDAO extends ConnectionPool {
 		    dto.setPrice(rs.getString(5));
 		    dto.setContent(rs.getString(6));
 		    dto.setPostdate(rs.getString(7));
-		    dto.setOimg(rs.getString(8));
-		    dto.setSimg(rs.getString(9));
-		    dto.setHeart(rs.getString(10));
-		    dto.setChattime(rs.getString(11));
-		    dto.setVisitcount(rs.getString(12));
-            
+		    dto.setHeart(rs.getString(8));
+		    dto.setChattime(rs.getString(9));
+		    dto.setVisitcount(rs.getString(10));
+            dto.setSellAvailable(rs.getString(11));
+            dto.setBargainAvailable(rs.getString(12));
+            dto.setMinimumPeriod(rs.getString(13));
+            dto.setMaximumPeriod(rs.getString(14));
+            dto.setsImg(rs.getString(15));
             bbs.add(dto);
          }
       } catch (Exception e) {
@@ -88,17 +90,21 @@ public class LendmarkDAO extends ConnectionPool {
 		int result =0;
 		try {
 			String query = "INSERT INTO lendmarklist ("
-						+ " idx,id,title,content,category,price,oimg,simg)"
+						+ " idx,id,title,content,category,price,sellAvailable,bargainAvailable,minimumPeriod,maximumPeriod,simg)"
 						+" VALUES ("
-						+" seq_lendlist_num.NEXTVAL, ?, ?, ?, ?, ?, ?,?)";
+						+" seq_lendlist_num.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
 			psmt = con.prepareStatement(query);
 			psmt.setString(1, dto.getId());
 			psmt.setString(2, dto.getTitle());
 			psmt.setString(3, dto.getContent());
 			psmt.setString(4, dto.getCategory());
 			psmt.setString(5, dto.getPrice());
-			psmt.setString(6, dto.getSimg());
-			psmt.setString(7, dto.getSimg());
+			psmt.setString(6, dto.getSellAvailable());
+			psmt.setString(7, dto.getBargainAvailable());
+			psmt.setString(8, dto.getMinimumPeriod());
+			psmt.setString(9, dto.getMaximumPeriod());
+			psmt.setString(10, dto.getsImg());
+
 			result = psmt.executeUpdate();
 		}
 		catch(Exception e) {
@@ -107,6 +113,27 @@ public class LendmarkDAO extends ConnectionPool {
 		}
 		return result;
 	}
+   public String searchBoardidx(String id,String title) {
+	   String result ="";
+	   try {
+		   String query = " SELECT idx FROM lendmarklist WHERE id=? AND title=? "
+				   +" ORDER BY idx DESC ";
+		   psmt = con.prepareStatement(query);
+		   psmt.setString(1, id);
+		   psmt.setString(2, title);
+		   rs=psmt.executeQuery();
+		   rs.next();
+		   result = rs.getString(1);
+		   System.out.println(query);
+		   System.out.println(result);
+	   }
+	   catch(Exception e) {
+		   System.out.println("게시물 인덱스 서치 중 오류 발생");
+		   e.printStackTrace();
+	   }
+	   
+	   return result;
+   }
    public LendmarkBoardDTO selectView(String idx) {
 	   LendmarkBoardDTO dto = new LendmarkBoardDTO();
 	   String query = "SELECT * FROM lendmarklist WHERE idx=?";
@@ -117,17 +144,20 @@ public class LendmarkDAO extends ConnectionPool {
 		   rs = psmt.executeQuery();
 		   if(rs.next()) {
 			   dto.setIdx(rs.getString(1));
-			   dto.setId(rs.getString(2));
-			   dto.setTitle(rs.getString(3));
-			   dto.setCategory(rs.getString(4));
-			   dto.setPrice(rs.getString(5));
-			   dto.setContent(rs.getString(6));
-			   dto.setPostdate(rs.getString(7));
-			   dto.setOimg(rs.getString(8));
-			   dto.setSimg(rs.getString(9));
-			   dto.setHeart(rs.getString(10));
-			   dto.setChattime(rs.getString(11));
-			   dto.setVisitcount(rs.getString(12));
+			    dto.setId(rs.getString(2));
+			    dto.setTitle(rs.getString(3));
+			    dto.setCategory(rs.getString(4));
+			    dto.setPrice(rs.getString(5));
+			    dto.setContent(rs.getString(6));
+			    dto.setPostdate(rs.getString(7));
+			    dto.setHeart(rs.getString(8));
+			    dto.setChattime(rs.getString(9));
+			    dto.setVisitcount(rs.getString(10));
+	            dto.setSellAvailable(rs.getString(11));
+	            dto.setBargainAvailable(rs.getString(12));
+	            dto.setMinimumPeriod(rs.getString(13));
+	            dto.setMaximumPeriod(rs.getString(14));
+	            dto.setsImg(rs.getString(15));
 		   }
 		   System.out.println(query);
 		   System.out.println(idx);
@@ -282,15 +312,13 @@ public class LendmarkDAO extends ConnectionPool {
     	try {
     		//비회원제 게시판이므로 패스워드까지 where절에 추가함.
     		String query = "UPDATE lendmarklist SET "
-    				+ " title=?, category=?, content=?, oimg=?, simg=?, postdate = to_char(sysdate,'hh24:mi:ss')  "
+    				+ " title=?, category=?, content=?, postdate = to_char(sysdate,'hh24:mi:ss')  "
     				+ " WHERE idx=? ";
     		psmt = con.prepareStatement(query);
     		psmt.setString(1, dto.getTitle());
     		psmt.setString(2, dto.getCategory());
 			psmt.setString(3, dto.getContent());
-			psmt.setString(4, dto.getOimg());
-			psmt.setString(5, dto.getSimg());
-			psmt.setString(6, dto.getIdx());
+			psmt.setString(4, dto.getIdx());
 			result = psmt.executeUpdate();
     	}
     	catch(Exception e) {
@@ -472,5 +500,35 @@ public class LendmarkDAO extends ConnectionPool {
 		}
 		//Map컬렉션에 저장된 회원정보 반환
 		return map;
+	}
+	public int insertImg(List<ImgUploadDTO> list) {
+		int result = 0;
+		try {
+			String query = "INSERT INTO imgupload ("
+						+ " idx, boardidx, id, title, oimg, simg) "
+						+" VALUES ("
+						+" seq_img_num.nextval, ?, ?, ?, ?, ? )";
+			
+			for(ImgUploadDTO dto : list) {
+				
+				psmt = con.prepareStatement(query);
+				psmt.setString(1, dto.getBoardidx());
+				psmt.setString(2, dto.getId());
+				psmt.setString(3, dto.getTitle());
+				psmt.setString(4, dto.getoImg());
+				psmt.setString(5, dto.getsImg());
+				System.out.println(query);
+				psmt.executeUpdate();
+				result++;
+			}
+			
+			//쿼리문 실행
+		}
+		catch(Exception e) {
+			System.out.println("사진파일 insert중 에러발생");
+			e.printStackTrace();
+		}
+		
+		return result;
 	}
 }
