@@ -5,6 +5,7 @@
 <style>
 	nav{
 		font-size:12px; font-family:verdana;
+		width : 100%;
 	}
 </style>
 	<div class="row">		

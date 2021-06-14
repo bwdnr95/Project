@@ -106,7 +106,7 @@ public class WriteController2 extends HttpServlet {
 					System.out.println("dto2에 저장되는 fileName :" +fileName);
 					dto2.setsImg(newFileName);
 					System.out.println("dto2에 저장되는 newFileName :" +newFileName);
-					if(maximumPeriod==null) {
+					if(maximumPeriod=="") {
 						dto.setMaximumPeriod("90");
 					}
 					else {

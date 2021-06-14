@@ -17,8 +17,12 @@
 $(function(){
 	$(document).on("change","input[type=file]",handleImgFileSelect);
 	$(".submit-button").click(function(){
-		$("input[type=file]").remove("#display-"+idx);
-		document.writeFrm.submit();
+		var check =formValidate(document.writeFrm);
+		if(check){
+			$("input[type=file]").remove("#display-"+idx);
+			document.writeFrm.submit();	
+		}
+		
 	});
 	
 	/* $("input[type=file]").on("change",handleImgFileSelect); */
@@ -152,25 +156,59 @@ $(function(){
 			
 		});
 	}
+	
 	function formValidate(f) {
+		
 		if (f.title.value == "") {
 			alert("제목을 입력하세요");
 			f.title.focus();
 			return false;
 		}
-		if (f.category.value == "") {
+		else if (f.category.value == "") {
 			alert("카테고리를 선택하세요");
 			return false;
 		}
-		if (f.price.value == "") {
+		
+		else if (f.price.value == "") {
 			alert("가격을 입력하세요");
 			f.price.focus();
 			return false;
 		}
-		if(f.content.value ==""){
+		else if(isNaN(f.minimumPeriod.value)){
+			alert("최소대여기간은 숫자만 입력해주세요.");
+			f.minimumPeriod.focus();
+			return false;
+		}
+		else if(isNaN(f.maximumPeriod.value)){
+			alert("최대대여기간은 숫자만 입력해주세요.");
+			f.maximumPeriod.focus();
+			return false;
+		}
+		else if(f.minimumPeriod.value==""){
+			alert("최소대여기간을 입력하세요");
+			f.minimumPeriod.focus();
+			return false;
+			
+		}
+		else if(f.maximumPeriod.value==""){
+			alert("최대대여기간을 입력하세요");
+			f.maximumPeriod.focus();
+			return false;
+			
+		}
+		else if(f.content.value ==""){
 			alert("내용을 입력하세요");
 			f.content.focus();
 			return false;
+		}
+		else if(parseInt(f.minimumPeriod.value)>parseInt(f.maximumPeriod.value)){
+			alert("최대대여기간은 최소대여기간보다 작을 수 없습니다.");
+			f.maximumPeriod.focus();
+			return false;
+		}
+		
+		else{
+			return true;
 		}
 	}
 </script>
@@ -736,7 +774,7 @@ $(function(){
 						<div class="img-column-content">
 							<ul class="img-content-box">
 								<li class="image-upload-box" id="put-img">이미지 등록<input type="file" id="display-0" name="image-0"
-									accept="image/*">
+									accept="image/*" required>
 								</li>
 								<div id = "append-space"></div>
 							</ul>
@@ -851,7 +889,7 @@ $(function(){
 					</li>
 					<li class="availablity-column-box">
 						<div class="availablity-column-title">
-							최대대여기간
+							최대대여기간<span>*</span>
 						</div>
 						<div class="price-box">
 							<div class="price-inner-box">
@@ -861,7 +899,7 @@ $(function(){
 						</div>
 					</li>
 					<li class="availablity-column-box">
-						<div class="availablity-column-title">설명</div>
+						<div class="availablity-column-title">설명<span>*</span></div>
 						<div class="content-inner">
 							<textarea placeholder="상품 설명을 입력해주세요." rows="6" class="content-area" name="content"></textarea>
 						</div>

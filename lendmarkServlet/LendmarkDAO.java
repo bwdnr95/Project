@@ -570,4 +570,35 @@ public class LendmarkDAO extends ConnectionPool {
 		   }
 		   return bbs;
 	   }
+	   
+	   public List<LendmarkBoardDTO> sellerPost(String id) {
+		   List<LendmarkBoardDTO> bbs = new Vector<LendmarkBoardDTO>();
+		   String query = " SELECT idx,simg,price FROM lendmarklist "
+				   +" WHERE id=? "
+				   +" ORDER BY visitcount DESC ";
+		   try {
+			   int index = 0;
+			   psmt = con.prepareStatement(query);
+			   psmt.setString(1, id);
+			   rs=psmt.executeQuery();
+			   while(rs.next()) {
+				   if(index>=2) {
+					   break;
+				   }
+				   else {
+					   LendmarkBoardDTO dto = new LendmarkBoardDTO();
+					   dto.setIdx(rs.getString("idx"));
+					   dto.setsImg(rs.getString("simg"));
+					   dto.setPrice(rs.getString("price"));
+					   bbs.add(dto);
+					   index++;   
+				   }
+				   
+			   }
+		   }
+		   catch(Exception e) {
+			   e.printStackTrace();
+		   }
+		   return bbs;
+	   }
 }
